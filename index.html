@@ -24,15 +24,35 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
+      font-family: sans-serif;
     }
 
     #math-container {
       width: 90vw;
-      height: auto;
       font-size: 5vw;
       text-align: center;
       word-break: break-word;
+    }
+
+    #input-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 90vw;
+      max-width: 600px;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1.2rem;
+      cursor: pointer;
     }
 
     svg {
@@ -42,7 +62,7 @@
   </style>
 </head>
 <body>
-  <div id="math-container">Loading...</div>
+  <div id="main-content"></div>
 
   <script>
     function getQueryParam(name) {
@@ -51,13 +71,30 @@
     }
 
     const formula = getQueryParam("formula");
-    const container = document.getElementById("math-container");
+    const main = document.getElementById("main-content");
 
     if (formula) {
+      const container = document.createElement("div");
+      container.id = "math-container";
       container.innerHTML = `$$${decodeURIComponent(formula)}$$`;
+      main.appendChild(container);
       MathJax.typesetPromise();
     } else {
-      container.innerText = "Missing 'formula' query parameter";
+      const form = document.createElement("div");
+      form.id = "input-form";
+
+      form.innerHTML = `
+        <input type="text" id="formula-input" placeholder="Enter LaTeX formula (e.g. \\frac{a}{b})" />
+        <button onclick="submitFormula()">Render</button>
+      `;
+
+      main.appendChild(form);
+    }
+
+    function submitFormula() {
+      const input = document.getElementById("formula-input").value;
+      const encoded = encodeURIComponent(input);
+      window.location.search = `?formula=${encoded}`;
     }
   </script>
 </body>
