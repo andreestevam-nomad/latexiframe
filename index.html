@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LaTeX Renderer</title>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="math-container"></div>
+
+  <script>
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    const formula = getQueryParam("formula");
+    const container = document.getElementById("math-container");
+
+    if (formula) {
+      container.innerHTML = `\\(${decodeURIComponent(formula)}\\)`;
+      MathJax.typeset();
+    } else {
+      container.innerText = "Missing 'formula' query parameter";
+    }
+  </script>
+</body>
+</html>
