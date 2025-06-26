@@ -78,7 +78,7 @@
     if (formula && !editMode) {
       const container = document.createElement("div");
       container.id = "math-container";
-      container.innerHTML = `$$${decodeURIComponent(formula)}$$`;
+      container.innerHTML = `$$\\displaylines{${decodeURIComponent(formula)}}$$`;
       main.appendChild(container);
       MathJax.typesetPromise();
     } else {
