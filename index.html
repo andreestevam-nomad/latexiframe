@@ -6,7 +6,7 @@
   <script>
     window.MathJax = {
       tex: {
-        displayMath: [['$$','$$'], ['\\[','\\]']]
+       // displayMath: [['$$','$$'], ['\\[','\\]']]
       },
       svg: {
         scale: 1,
@@ -73,7 +73,9 @@
     const formula = getQueryParam("formula");
     const main = document.getElementById("main-content");
 
-    if (formula) {
+    const editMode = getQueryParam("edit") === "true";
+
+    if (formula && !editMode) {
       const container = document.createElement("div");
       container.id = "math-container";
       container.innerHTML = `$$${decodeURIComponent(formula)}$$`;
@@ -83,8 +85,10 @@
       const form = document.createElement("div");
       form.id = "input-form";
 
+      const initialFormula = formula ? decodeURIComponent(formula) : "";
+
       form.innerHTML = `
-        <input type="text" id="formula-input" placeholder="Enter LaTeX formula (e.g. \\frac{a}{b})" />
+        <input type="text" id="formula-input" placeholder="Enter LaTeX formula (e.g. \\frac{a}{b})" value="${initialFormula}" />
         <button onclick="submitFormula()">Render</button>
       `;
 
